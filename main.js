@@ -1,12 +1,12 @@
 const argv = require('yargs').argv
 const moves = ['rock', 'paper', 'scissors']
 const humanMove = argv.move
-const play = arr => {
+// const computerPick =
+const computerMove = (arr => {
   return arr[Math.floor(Math.random() * 3)]
-}
-const computerMove = play(moves)
+})(moves)
 
-const winner = (human, computer) => {
+const play = (human, computer) => {
   if ((human === 'rock') && (computer === 'scissors')) {
     return 'Human'
   } else if ((human === 'scissors') && (computer === 'paper')) {
@@ -18,7 +18,15 @@ const winner = (human, computer) => {
   }
 }
 
+const winner = (() => {
+  if (humanMove === computerMove) {
+    return 'No one'
+  } else {
+    return play(humanMove, computerMove)
+  }
+})()
+
 console.log(`Playing a game of Roshambo against the computer.`)
 console.log(`Player plays ${humanMove}!`)
 console.log(`Computer plays ${computerMove}!`)
-console.log(`~${winner(humanMove, computerMove)} wins.~`)
+console.log(`~${winner} wins.~`)

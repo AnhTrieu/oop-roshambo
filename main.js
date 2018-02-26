@@ -1,29 +1,45 @@
 const argv = require('yargs').argv
-const humanMove = argv.move
-const computerMove = (arr => {
-  return arr[Math.floor(Math.random() * 3)]
-})(['rock', 'paper', 'scissors'])
 
-const play = (human, computer) => {
-  if ((human === 'rock') && (computer === 'scissors')) {
-    return 'Human'
-  } else if ((human === 'scissors') && (computer === 'paper')) {
-    return 'Human'
-  } else if ((human === 'paper') && (computer === 'rock')) {
-    return 'Human'
-  } else {
-    return 'Computer'
+class Players {
+  constructor(human) {
+    this.human = human
+  }
+
+  makeComputerMoves() {
+    return (arr => arr[Math.floor(Math.random() * 3)])(['rock', 'paper', 'scissors'])
   }
 }
 
-const winner = (() => {
-  if (humanMove === computerMove) {
-    return 'No one'
-  } else {
-    return play(humanMove, computerMove)
+class Roshambo extends Players {
+  constructor(human, computer) {
+    super(human)
+    this.computer = super.makeComputerMoves()
+    this.winner = 'No one'
   }
-})()
 
-const logArr = [`Playing a game of Roshambo against the computer.`, `Player plays ${humanMove}!`, `Computer plays ${computerMove}!`, `~${winner} wins.~`]
+  play() {
+    if (this.human === this.computer) {
+      return this.winner
+    } else if ((this.human === 'rock') && (this.computer === 'scissors')) {
+      this.winner = 'Human'
+    } else if ((this.human === 'scissors') && (this.computer === 'paper')) {
+      this.winner = 'Human'
+    } else if ((this.human === 'paper') && (this.computer === 'rock')) {
+      this.winner = 'Human'
+    } else {
+      this.winner = 'Computer'
+    }
 
-logArr.forEach(line => console.log(line))
+    return this.winner
+  }
+
+  print() {
+    const logArr = [`Playing a game of Roshambo against the computer.`, `Player plays ${this.human}!`, `Computer plays ${this.computer}!`, `~${this.winner} wins.~`]
+
+    logArr.forEach(line => console.log(line))
+  }
+}
+
+const game = new Roshambo(argv.move)
+game.play()
+game.print()
